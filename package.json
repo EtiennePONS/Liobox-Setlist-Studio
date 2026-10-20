@@ -1,0 +1,25 @@
+{
+  "name": "liobox-setlist",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "parcel src/index.html --host 127.0.0.1 --port 1234",
+    "build": "parcel build src/index.html --public-url ./ --dist-dir dist-production",
+    "postbuild": "node -e \"const fs = require('node:fs'); fs.mkdirSync('dist-production/licenses', { recursive: true }); for (const font of ['manrope', 'barlow-condensed']) fs.copyFileSync('node_modules/@fontsource/' + font + '/LICENSE', 'dist-production/licenses/' + font + '.txt');\"",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@fontsource/barlow-condensed": "^5.2.0",
+    "@fontsource/manrope": "^5.2.0",
+    "jspdf": "^4.0.0",
+    "jspdf-autotable": "^5.0.2",
+    "lucide-react": "^0.468.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "parcel": "^2.15.0"
+  },
+  "browserslist": "> 0.5%, last 2 versions, not dead"
+}
