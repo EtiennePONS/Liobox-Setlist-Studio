@@ -149,7 +149,7 @@ test('masque les deux premiers libelles sans retirer les entetes des metadonnees
   const options = { title: list.name, subtitle: '', date: '', size: 'medium', bpm: true, key: true, duration: true };
   const document = createPdf(list, options);
   const cells = document.lastAutoTable.head[0].cells;
-  assert.deepEqual(Object.values(cells).map(cell => cell.text.join('')), ['', '', 'BPM', 'TON.', 'DUREE']);
+  assert.deepEqual(Object.values(cells).map(cell => cell.text.join('')), ['', '', 'BPM', 'TON.', 'DURÉE']);
   assert.equal(document.lastAutoTable.body[0].cells[0].text.join(''), '01');
   assert.equal(document.lastAutoTable.body[0].cells[1].text.join(''), 'Titre test');
 });
@@ -319,4 +319,22 @@ test('lit l’export local fourni sans le modifier', { skip: !existsSync(fixture
     assert.equal(unchanged.fontSize, fontSize);
     assert.equal(unchanged.rowPadding, 3);
   }
+});
+
+test('localise les erreurs du fichier selon la langue choisie', () => {
+  assert.throws(() => parseDmf('texte', 'en'), /valid JSON/);
+  assert.throws(() => parseDmf('texte', 'es'), /JSON válido/);
+});
+
+test('localise les dates, statistiques et libellés du PDF', () => {
+  const list = parseDmf(sample())[0];
+  const options = { title: list.name, subtitle: 'Venue', date: '2026-10-16', size: 'medium', bpm: true, key: true, duration: true };
+  const english = createPdf(list, options, 'en').output();
+  const spanish = createPdf(list, options, 'es').output();
+  assert.ok(english.includes('Venue | 16/10/2026'));
+  assert.ok(english.includes('1 track | 3:58'));
+  assert.ok(english.includes('KEY'));
+  assert.ok(spanish.includes('Venue | 16/10/2026'));
+  assert.ok(spanish.includes('1 canción | 3:58'));
+  assert.ok(spanish.includes('TON.'));
 });

@@ -24,6 +24,9 @@ button { display: inline-flex; align-items: center; justify-content: center; gap
 .product-lockup { display: flex; align-items: center; gap: 18px; }
 .product-label { border-left: 1px solid var(--line); padding-left: 30px; }
 .topbar-tagline { font-size: 9px; font-weight: 600; }
+.language-switch { display: flex; gap: 2px; margin-left: auto; padding: 3px; border: 1px solid var(--line); border-radius: 5px; background: #f7f8f7; }
+.language-switch button { min-width: 34px; min-height: 28px; padding: 5px 7px; border: 0; border-radius: 3px; background: transparent; color: var(--muted); font-size: 9px; font-weight: 800; }
+.language-switch button[aria-pressed='true'] { background: white; color: var(--green); box-shadow: 0 1px 4px #0000000d; }
 main { max-width: 1440px; padding: 34px 4% 40px; margin: auto; }
 .workspace-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
 h1 { font-size: 30px; font-weight: 700; margin: 0; }
@@ -129,7 +132,7 @@ table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 @media (max-width: 950px) { .workspace { grid-template-columns: 250px minmax(0, 1fr); } .sidebar { padding-right: 20px; } .preview-area { padding-left: 16px; padding-right: 16px; } }
 @media (max-width: 760px) { .topbar-tagline { display: none; } }
 @media (max-width: 700px) {
-  .topbar { min-height: 65px; padding: 14px 5%; } .brand { font-size: 18px; } .product-lockup { display: none; } main { padding: 25px 5%; }
+  .topbar { min-height: 65px; padding: 14px 5%; gap: 12px; } .brand { font-size: 18px; } .product-lockup { display: none; } .language-switch { margin-left: auto; } main { padding: 25px 5%; }
   h1 { font-size: 25px; } .edition { display: none; } .workspace-heading { margin-bottom: 22px; } .workspace { display: block; }
   .sidebar { padding: 20px 0; } .sidebar section { padding-bottom: 18px; margin-bottom: 18px; } .sidebar section:not(:first-child) { display: grid; grid-template-columns: 1fr 1fr; column-gap: 14px; } .sidebar section h2, .sidebar section .field:last-child, .field-label, .segments, .column-toggles, .format-badge { grid-column: 1 / -1; }
   .sidebar section .field { margin-top: 5px; } .sidebar section .field:last-child { margin-top: 14px; } .export-actions { grid-template-columns: 1fr 1fr; } .export-actions button { padding: 12px 8px; font-size: 11px; }

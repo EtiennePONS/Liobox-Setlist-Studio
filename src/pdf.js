@@ -1,8 +1,12 @@
 import { jsPDF } from 'jspdf';
 import { autoTable } from 'jspdf-autotable';
 import { formatDuration } from './dmf.js';
+import { getMessages } from './i18n.js';
 
-export function createPdfLayout(list, options) {
+const localeTags = { fr: 'fr-FR', en: 'en-GB', es: 'es-ES' };
+
+export function createPdfLayout(list, options, language = 'fr') {
+  const messages = getMessages(language);
   const document = new jsPDF({ unit: 'mm', format: 'a4' });
   const pages = [];
   const partStarts = [0, ...list.tracks.flatMap((track, index) => index > 0 && track.startNewPart ? [index] : [])];
@@ -12,9 +16,9 @@ export function createPdfLayout(list, options) {
   const numberFontSize = options.size === 'large' ? 14 : 10;
   const rowPadding = options.size === 'large' ? 2.5 : 3;
   const title = options.title.trim() || list.name;
-  const date = options.date ? new Date(`${options.date}T12:00:00`).toLocaleDateString('fr-FR') : '';
+  const date = options.date ? new Date(`${options.date}T12:00:00`).toLocaleDateString(localeTags[language] ?? localeTags.fr) : '';
   const details = [options.subtitle.trim(), date].filter(Boolean).join(' | ');
-  const statistics = `${list.tracks.length} ${list.tracks.length === 1 ? 'morceau' : 'morceaux'} | ${total}`;
+  const statistics = messages.statistics(list.tracks.length, total);
   const image = options.headerImage;
   const titleLines = [title.replace(/[\r\n]+/g, ' ')];
   const partFontSize = 22;
@@ -69,7 +73,7 @@ export function createPdfLayout(list, options) {
         }
       });
     }
-    const partLabel = partStarts.length > 1 ? `Partie ${currentPart}/${partStarts.length}` : '';
+    const partLabel = partStarts.length > 1 ? messages.pdfPart(currentPart, partStarts.length) : '';
     if (partLabel) {
       document.setFont('helvetica', 'bold');
       document.setFontSize(partFontSize);
@@ -89,8 +93,8 @@ export function createPdfLayout(list, options) {
     if (partIndex > 0) document.addPage();
     const head = ['', ''];
     if (options.bpm) head.push('BPM');
-    if (options.key) head.push('TON.');
-    if (options.duration) head.push('DUREE');
+    if (options.key) head.push(messages.tableKey);
+    if (options.duration) head.push(messages.tableDuration);
     autoTable(document, {
       startY: tableTop,
       head: [head],
@@ -134,17 +138,17 @@ export function createPdfLayout(list, options) {
     document.setFont('helvetica', 'normal');
     document.setFontSize(8);
     document.setTextColor(110);
-    document.text(partStarts.length > 1 ? `SETLIST STUDIO / PARTIE ${pages[page - 1].part}` : 'SETLIST STUDIO', 15, 286);
+    document.text(partStarts.length > 1 ? `SETLIST STUDIO / ${messages.pdfFooterPart(pages[page - 1].part)}` : 'SETLIST STUDIO', 15, 286);
     document.text(`${page} / ${count}`, 195, 286, { align: 'right' });
   }
   return { document, pages, partCount: partStarts.length, header: { titleLines, titleFontSize, titleHeight, titleInkHeight, partFontSize, partHeight, detailsLines, detailsOffset, detailsHeight, statisticsGap, statisticsOffset, statisticsHeight, statisticsInkHeight, statisticsBaseline, textTop, textHeight, textX, imageTop, imageLeft, imageWidth, imageHeight, contentHeight, headerBottom }, tableTop, fontSize, numberFontSize, rowPadding };
 }
 
-export function createPdf(list, options) {
-  return createPdfLayout(list, options).document;
+export function createPdf(list, options, language = 'fr') {
+  return createPdfLayout(list, options, language).document;
 }
 
-export function downloadPdf(list, options) {
+export function downloadPdf(list, options, language = 'fr') {
   const name = (options.title.trim() || list.name).replace(/[^a-zA-Z0-9_-]/g, '-').slice(0, 80) || 'setlist';
-  createPdf(list, options).save(`${name}.pdf`);
+  createPdf(list, options, language).save(`${name}.pdf`);
 }

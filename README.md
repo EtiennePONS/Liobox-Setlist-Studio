@@ -13,6 +13,10 @@ npm run dev
 
 Ouvrir http://127.0.0.1:1234. Choisir un export `.dmf`, selectionner la set-list, ajuster l'en-tete et les colonnes. L'onglet Morceaux permet de corriger les titres. Telecharger le PDF ou imprimer. Les durees sont interpretees en secondes, a confirmer avec GoorooLink.
 
+## Langues
+
+L'interface et les libelles du PDF sont disponibles en francais, anglais et espagnol. La langue du navigateur est choisie au premier lancement lorsqu'elle est prise en charge ; le selecteur en haut de page permet de la modifier et le choix est conserve dans le navigateur. Les noms de set-lists et de morceaux importes ne sont pas traduits.
+
 Dans En-tete, Ajouter une image importe un logo PNG, JPEG ou WebP (5 Mo maximum). Le cartouche compact place l'image a gauche dans une zone de 34 x 22 mm, proportions conservees, le titre a droite, puis le lieu et la date sur une ligne qui se replie si necessaire. Sans image, le texte occupe toute la largeur. Le titre reste sur une seule ligne : sa taille diminue automatiquement si necessaire, sans depasser les 22 points habituels ni modifier la saisie ou sa casse. Le cartouche figure sur chaque page dans l'apercu, l'impression et le PDF ; un lieu ou sous-titre long augmente sa hauteur sans etre coupe. L'image peut etre remplacee ou retiree avec le bouton corbeille. Sa presence ne reduit plus automatiquement le nombre de morceaux par page.
 
 Le nombre de morceaux et la duree totale figurent sur une ligne dediee dans le cartouche, sous le lieu et la date : titre en premiere ligne, lieu et date en deuxieme ligne, statistiques en troisieme ligne. Si le lieu est long, les statistiques restent sous toutes ses lignes ; sans lieu ni date, elles suivent directement le titre. Il n'y a plus de ligne de statistiques separee au-dessus du tableau ; celui-ci commence 3 mm apres le trait de separation. L'espace de 3 mm sous l'image reste reserve.
